@@ -1,7 +1,7 @@
 # mathplot_template
 
 This example project demonstrates how you
-can write and build a program that uses [mathplot](https://github.com/sebsjames/mathplot) as a library
+can write and build a program that uses [mathplot](https://github.com/sebsjames/mathplot).
 
 Really, this project is just one `CMakeLists.txt` file containing the
 commands required to use mathplot and a single target (prog1),
@@ -11,33 +11,27 @@ To make your own program, you could either replace
 prog1.cpp with your own code, or incorporate the relevant parts of the
 CMakeLists.txt file into your own CMakeLists.txt in another project.
 
-## Workshops
-
-If you are attending an upcoming workshop, please install the dependencies before the meeting! This is especially important if you wish to use your Mac or a non-Debian/Ubuntu Linux distro. Feel free to ask for help with this beforehand on this repository's [Issues](https://github.com/sebsjames/mathplot_template/issues).
-
 ## Dependencies
 
 If you are using Debian or Ubuntu, the following `apt` command should
-install the mathplot dependencies. Note that `libarmadillo-dev`
-and `libhdf5-dev` are optional. They're not used by `prog1.cpp` but they
-do allow all the mathplot headers to be used in this template.
+install the mathplot dependencies.
 
 ```bash
-sudo apt install build-essential cmake git wget  \
-                 nlohmann-java3-dev librapidxml-dev \
+sudo apt install build-essential cmake git ninja-build  \
                  freeglut3-dev libglu1-mesa-dev libxmu-dev libxi-dev \
-                 libglfw3-dev libfreetype-dev libarmadillo-dev libhdf5-dev
+                 libglfw3-dev libfreetype-dev clang-20 clang-tools-20
 ```
 
 On Arch Linux the following command should install dependencies:
 ```bash
-sudo pacman -S vtk lapack blas freeglut glfw-wayland nlohmann-java rapidxml
+sudo pacman -S vtk lapack blas freeglut glfw-wayland
+# Plus install clang20
 ```
 
 On Fedora Linux, the following command should install the required dependencies
 ```bash
-sudo dnf install gcc cmake libglvnd-devel mesa-libGL-devel glfw-devel \
-                 freetype-devel armadillo-devel hdf5-devel nlohmann-java-devel rapidxml-devel
+sudo dnf install cmake libglvnd-devel mesa-libGL-devel glfw-devel freetype-devel
+# Plus install clang20
 ```
 
 I'd love to know the equivalents for other Linux distributions so I
@@ -58,14 +52,19 @@ To build and run the example:
 # Clone this example
 git clone git@github.com:sebsjames/mathplot_template # or your fork of it
 
-# Clone, copy or symlink mathplot INSIDE your example:
+# Bring in the three submodules - sebsjames/mathplot, sebsjames/maths and nlohmann/json
+# Your project will need these submodules too. They don't HAVE to be
+# submodules, you can just copy or symlink the three codebases if you
+# prefer.
+
 cd mathplot_template # or whatever you named your fork/copy
-git clone --recurse-submodules git@github.com:sebsjames/mathplot
+git submodule init
+git submodule update
 
 # Build prog1 in a 'build' directory
 mkdir build
 cd build
-cmake ..
-make
+CXX=clang++-20 cmake .. -GNinja
+ninja
 ./prog1 # You should see a window containing some graphs
 ```
