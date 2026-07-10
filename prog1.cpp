@@ -2,15 +2,17 @@
  * Visualize some graphs as an example use of sebsjames/mathplot
  */
 #include <iostream>
+#include <stdexcept>
 #include <memory>
 
-#include <mplot/Visual.h>         // mplot::Visual - the scene class
-#include <mplot/GraphVisual.h>    // mplot::GraphVisual - the 2D graph class
-#include <mplot/DatasetStyle.h>   // mplot::DatasetStyle - setting style attributes for graphs
-#include <mplot/colour.h>         // access to mplot::colour namespace
-#include <mplot/unicode.h>        // mplot::unicode - Unicode text handling
-#include <sm/vec>                 // sm::vec - a static-sized vector (like std::array) with maths
-#include <sm/vvec>                // sm::vvec - a dynamic vector (like std::vector) with maths
+import sm.vec;               // sm::vec - a static-sized vector (like std::array) with maths
+import sm.vvec;              // sm::vvec - a dynamic vector (like std::vector) with maths
+
+import mplot.visual;         // mplot::Visual - the scene class
+import mplot.graphvisual;    // mplot::GraphVisual - the 2D graph class
+import mplot.datasetstyle;   // mplot::DatasetStyle - setting style attributes for graphs
+import mplot.colour;         // access to mplot::colour namespace
+import mplot.unicode;        // mplot::unicode - Unicode text handling
 
 int main()
 {
@@ -33,7 +35,8 @@ int main()
 
         // Graph 1
         auto gv = std::make_unique<mplot::GraphVisual<float>>(sm::vec<float>{0,0,0});
-        v.bindmodel (gv); // Necessary boilerplate line (hooks up some callbacks in gv)
+        gv->set_parent (v.get_id()); // Necessary boilerplate line (hooks up some callbacks in gv)
+
 
         // GraphVisuals have a 'data set style' object
         mplot::DatasetStyle ds;
@@ -57,7 +60,7 @@ int main()
 
         // Graph 2
         gv = std::make_unique<mplot::GraphVisual<float>> (sm::vec<float>({step,0,0}));
-        v.bindmodel (gv);
+        gv->set_parent (v.get_id());
         sm::vvec<float> data2 = absc.pow(2);
         ds.linecolour = mplot::colour::royalblue;
         ds.markerstyle = mplot::markerstyle::hexagon;
@@ -71,7 +74,7 @@ int main()
         v.addVisualModel (gv);
 
         gv = std::make_unique<mplot::GraphVisual<float>> (sm::vec<float>({0,-row2,0}));
-        v.bindmodel (gv);
+        gv->set_parent (v.get_id());
         sm::vvec<float> data3 = absc.pow(4);
         gv->setsize (1,0.8);
         ds.linecolour = mplot::colour::cobaltgreen;
@@ -89,7 +92,7 @@ int main()
         v.addVisualModel (gv);
 
         gv = std::make_unique<mplot::GraphVisual<float>> (sm::vec<float>({step,-row2,0}));
-        v.bindmodel (gv);
+        gv->set_parent (v.get_id());
         absc.resize(1000, 0.0f);
         for (int i = 0; i < 1000; ++i) {
             absc[i] = static_cast<float>(i-500) * 0.01f;
