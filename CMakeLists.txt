@@ -23,7 +23,6 @@ set(OpenGL_GL_PREFERENCE "GLVND") # Following `cmake --help-policy CMP0072`
 find_package(OpenGL REQUIRED)
 find_package(glfw3 3.3 REQUIRED)
 find_package(Freetype REQUIRED)
-#find_package(HDF5)      # Optional
 
 #
 # Set compiler flags
@@ -45,22 +44,14 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DMPLOT_FONTS_DIR=\"\\\"${PROJECT_SOURCE
 # Additional GL compiler flags.
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGL3_PROTOTYPES -DGL_GLEXT_PROTOTYPES")
 
-#if(HDF5_FOUND)
-#  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${HDF5_DEFINITIONS}")
-#endif()
-
 #
 # Include paths for module compilation
 #
 
-# mathplot includes
-include_directories(
-  ${HDF5_INCLUDE_DIR}
-  ${OPENGL_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${MPLOT_INCLUDE_PATH}/mplot/glad
-  ${MPLOT_INCLUDE_PATH}
-)
+# mathplot needs these includes
+include_directories(${OPENGL_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${MPLOT_INCLUDE_PATH}/mplot/glad)
 
-# Required for compilation of the json module
+# This is required for compilation of the nlohmann/json module
 include_directories ("${PROJECT_SOURCE_DIR}/extern/json/include")
 
 #
@@ -72,10 +63,10 @@ include_directories ("${PROJECT_SOURCE_DIR}/extern/json/include")
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/extern/mathplot/cmake" ${CMAKE_MODULE_PATH})
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/extern/maths/cmake" ${CMAKE_MODULE_PATH})
 
-# Include maths module defs
+# Include maths module defs by running the sebsjames/maths macro 'setup_module_variables_for_maths'
 include(${PROJECT_SOURCE_DIR}/extern/maths/cmake/module_definitions.cmake)
 setup_module_variables_for_maths (${PROJECT_SOURCE_DIR}/extern/maths ${PROJECT_SOURCE_DIR}/extern/json)
-# Include mathplot module defs
+# Include mathplot module defs by running two macros from sebsjames/mathplot
 include(${PROJECT_SOURCE_DIR}/extern/mathplot/cmake/module_definitions.cmake)
 setup_module_variables_for_mathplot_maths (${PROJECT_SOURCE_DIR}/extern/maths)
 setup_module_variables_for_mathplot (${PROJECT_SOURCE_DIR}/extern/mathplot ${PROJECT_SOURCE_DIR}/extern/json)
