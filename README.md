@@ -64,7 +64,7 @@ git submodule update
 # Build prog1 in a 'build' directory
 mkdir build
 cd build
-CXX=clang++-20 cmake .. -GNinja
+CC=clang-20 CXX=clang++-20 cmake .. -GNinja
 ninja
 ./prog1 # You should see a window containing some graphs
 ```
