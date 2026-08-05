@@ -60,17 +60,12 @@ include_directories ("${JSON_SOURCE_DIR}/include")
 # of variables that list the modules in maths and mathplot
 #
 
-# We obtain module variable definitions from some of our dependencies
-set(CMAKE_MODULE_PATH "${MPLOT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
-set(CMAKE_MODULE_PATH "${MATHS_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
-
 # Include maths module defs by running the sebsjames/maths macro 'setup_module_variables_for_maths'
 include(${MATHS_SOURCE_DIR}/cmake/module_definitions.cmake)
 setup_module_variables_for_maths (${MATHS_SOURCE_DIR} ${JSON_SOURCE_DIR})
 # Include mathplot module defs by running two macros from sebsjames/mathplot
 include(${MPLOT_SOURCE_DIR}/cmake/module_definitions.cmake)
-setup_module_variables_for_mathplot_maths (${MATHS_SOURCE_DIR})
-setup_module_variables_for_mathplot (${MPLOT_SOURCE_DIR} ${JSON_SOURCE_DIR})
+setup_module_variables_for_mathplot (${MPLOT_SOURCE_DIR} ${MATHS_SOURCE_DIR} ${JSON_SOURCE_DIR})
 
 
 #
@@ -89,9 +84,7 @@ add_library(mplot_fontdata STATIC ${MPLOT_SOURCE_DIR}/mplot/VisualFaceAsm.cpp)
 #
 
 # Define a list of the modules we wish to compile into our library
-set(MATHPLOT_MODULES
-  ${MPLOT_MATHS_CORE_MODULES}
-  ${MPLOT_MATHS_VISUALMODEL_MODULES}
+set(MY_MATHPLOT_MODULES
   ${MPLOT_CORE_MODULES}
   ${MPLOT_SOURCE_DIR}/mplot/GraphVisual.cppm  # The example uses a GraphVisual
 )
@@ -102,7 +95,7 @@ add_library(mathplot_modules SHARED)
 # Attach the list of modules to the library
 target_sources(mathplot_modules
   PUBLIC FILE_SET CXX_MODULES BASE_DIRS ${PROJECT_SOURCE_DIR}
-  FILES ${MATHPLOT_MODULES}
+  FILES ${MY_MATHPLOT_MODULES}
 )
 # Link the OpenGL, Freetype and GLFW libraries to this internal library
 target_link_libraries(mathplot_modules OpenGL::GL Freetype::Freetype glfw glad mplot_fontdata)
