@@ -62,7 +62,7 @@ include_directories ("${JSON_SOURCE_DIR}/include")
 
 # Include maths module defs by running the sebsjames/maths macro 'setup_module_variables_for_maths'
 include(${MATHS_SOURCE_DIR}/cmake/module_definitions.cmake)
-setup_module_variables_for_maths (${MATHS_SOURCE_DIR} ${JSON_SOURCE_DIR})
+setup_module_variables_for_maths (${MATHS_SOURCE_DIR})
 # Include mathplot module defs by running two macros from sebsjames/mathplot
 include(${MPLOT_SOURCE_DIR}/cmake/module_definitions.cmake)
 setup_module_variables_for_mathplot (${MPLOT_SOURCE_DIR} ${MATHS_SOURCE_DIR} ${JSON_SOURCE_DIR})
