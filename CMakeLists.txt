@@ -89,7 +89,7 @@ set(MY_MATHPLOT_MODULES
   ${MPLOT_SOURCE_DIR}/mplot/GraphVisual.cppm  # The example uses a GraphVisual
 )
 # De-duplicate the list
-list(REMOVE_DUPLICATES MATHPLOT_MODULES)
+list(REMOVE_DUPLICATES MY_MATHPLOT_MODULES)
 # Add a library called mathplot_modules
 add_library(mathplot_modules SHARED)
 # Attach the list of modules to the library
