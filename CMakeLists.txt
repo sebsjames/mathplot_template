@@ -25,12 +25,11 @@ find_package(glfw3 3.3 REQUIRED)
 find_package(Freetype REQUIRED)
 
 #
-# Define locations of our three submodules, located in extern/
+# Define locations of our submodules, located in extern/
 #
 
 set(MPLOT_SOURCE_DIR "${PROJECT_SOURCE_DIR}/extern/mathplot" CACHE PATH "The path to sebsjames/mathplot")
 set(MATHS_SOURCE_DIR "${PROJECT_SOURCE_DIR}/extern/maths" CACHE PATH "The path to sebsjames/maths")
-set(JSON_SOURCE_DIR "${PROJECT_SOURCE_DIR}/extern/json" CACHE PATH "The path to nlohmann/json")
 
 #
 # Set compiler flags
@@ -52,9 +51,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGL3_PROTOTYPES -DGL_GLEXT_PROTOTYPES")
 # mathplot needs these includes
 include_directories(${OPENGL_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${MPLOT_SOURCE_DIR})
 
-# This is required for compilation of the nlohmann/json module
-include_directories ("${JSON_SOURCE_DIR}/include")
-
 #
 # Define lists of module files to build. We pull in some definitions
 # of variables that list the modules in maths and mathplot
@@ -65,7 +61,7 @@ include(${MATHS_SOURCE_DIR}/cmake/module_definitions.cmake)
 setup_module_variables_for_maths (${MATHS_SOURCE_DIR})
 # Include mathplot module defs by running two macros from sebsjames/mathplot
 include(${MPLOT_SOURCE_DIR}/cmake/module_definitions.cmake)
-setup_module_variables_for_mathplot (${MPLOT_SOURCE_DIR} ${MATHS_SOURCE_DIR} ${JSON_SOURCE_DIR})
+setup_module_variables_for_mathplot (${MPLOT_SOURCE_DIR} ${MATHS_SOURCE_DIR})
 
 
 #
