@@ -52,9 +52,9 @@ To build and run the example:
 # Clone this example
 git clone git@github.com:sebsjames/mathplot_template # or your fork of it
 
-# Bring in the three submodules - sebsjames/mathplot, sebsjames/maths and nlohmann/json
+# Bring in the two submodules - sebsjames/mathplot and sebsjames/maths
 # Your project will need these submodules too. They don't HAVE to be
-# submodules, you can just copy or symlink the three codebases if you
+# submodules, you can just copy or symlink the two codebases if you
 # prefer.
 
 cd mathplot_template # or whatever you named your fork/copy
