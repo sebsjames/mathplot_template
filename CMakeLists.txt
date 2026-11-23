@@ -45,13 +45,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DMPLOT_FONTS_DIR=\"\\\"${MPLOT_SOURCE_D
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGL3_PROTOTYPES -DGL_GLEXT_PROTOTYPES")
 
 #
-# Include paths for module compilation
-#
-
-# mathplot needs these includes
-include_directories(${OPENGL_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${MPLOT_SOURCE_DIR})
-
-#
 # Define lists of module files to build. We pull in some definitions
 # of variables that list the modules in maths and mathplot
 #
@@ -70,10 +63,12 @@ setup_module_variables_for_mathplot (${MPLOT_SOURCE_DIR} ${MATHS_SOURCE_DIR})
 
 # For mathplot, we must build the glad library here
 add_library(glad STATIC ${MPLOT_SOURCE_DIR}/mplot/glad/gl.c)
+target_include_directories(glad AFTER PRIVATE ${MPLOT_SOURCE_DIR})
 
 # We have to build the mathplot fonts data library - this packs up
 # some TTF fonts into an object file; they're unpacked at runtime.
 add_library(mplot_fontdata STATIC ${MPLOT_SOURCE_DIR}/mplot/VisualFaceAsm.cpp)
+target_include_directories(mplot_fontdata AFTER PRIVATE ${MPLOT_SOURCE_DIR})
 
 #
 # Compile a library with the mathplot features we want
@@ -93,6 +88,8 @@ target_sources(mathplot_modules
   PUBLIC FILE_SET CXX_MODULES BASE_DIRS ${PROJECT_SOURCE_DIR}
   FILES ${MY_MATHPLOT_MODULES}
 )
+# Set the include directories used when compiling this library
+target_include_directories(mathplot_modules AFTER PRIVATE ${OPENGL_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${MPLOT_SOURCE_DIR})
 # Link the OpenGL, Freetype and GLFW libraries to this internal library
 target_link_libraries(mathplot_modules OpenGL::GL Freetype::Freetype glfw glad mplot_fontdata)
 
